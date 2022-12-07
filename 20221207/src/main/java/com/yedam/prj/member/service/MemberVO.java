@@ -15,3 +15,4 @@ public class MemberVO {
 	private String memberTel;
 	private String memberAuthor;
 }
+
