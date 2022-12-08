@@ -1,36 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yedam.prj.member.map.MemberMapper">
-	<select id="memberSelectList" resultType="com.yedam.prj.member.service.MemberVO">
-		SELECT  * FROM MEMBER
+	<select id="memberSelectList"
+		resultType="com.yedam.prj.member.service.MemberVO">
+		SELECT * FROM MEMBER
 	</select>
 
-	<select id="memberSelect" resultType="com.yedam.prj.member.service.MemberVO">
+	<select id="memberSelect"
+		resultType="com.yedam.prj.member.service.MemberVO">
 		SELECT * FROM MEMBER
 		WHERE MEMBER_ID = #{memberId}
+		<if test="memberPassword !=null">AND MEMBER_PASSWORD = #{memberPassword}</if>
 	</select>
-	
-	<insert id="memberInsert" parameterType="com.yedam.prj.member.service.MemberVO">
+
+	<insert id="memberInsert"
+		parameterType="com.yedam.prj.member.service.MemberVO">
 		INSERT INTO MEMBER
 		VALUES(#{memberId},#{memberName},#{memberPassword},#{memberAge},
-			   #{memberAddress},#{memberTel},#{memberAuthor})
+		#{memberAddress},#{memberTel},#{memberAuthor})
 	</insert>
-	
-	<delete id="memberDelete" parameterType="com.yedam.prj.member.service.MemberVO">
-		DELETE FROM MEMBER WHERE_ID = #{memberId}
+
+	<delete id="memberDelete"
+		parameterType="com.yedam.prj.member.service.MemberVO">
+		DELETE FROM MEMBER WHERE MEMBER_ID = #{memberId}
 	</delete>
-	
-	<update id="memberUpdate">
+
+
+	<update id="memberUpdate"
+		parameterType="com.yedam.prj.member.service.MemberVO">
 		UPDATE MEMBER
-		SET MEMBER_PASSWORD = #{memberPassword}, MEMBER_ADDRESS = #{memberAddress},
-			MEMBER_TEL = #{memberTel}, MEMBER_AUTHOR = #{memberAuthor}
+		<set>
+			<if test="memberName != null">MEMBER_NAME = #{memberName},</if>
+			<if test="memberPassword != null">MEMBER_PASSWORD = #{memberPassword},</if>
+			<if test="memberAge != null">MEMBER_AGE=#{memberAge}, </if>
+			<if test="memberAddress != null">MEMBER_ADDRESS = #{memberAddress},</if>
+			<if test="memberTel != null">MEMBER_TEL = #{memberTel}, </if>
+			<if test="memberAuthor != null"> MEMBER_AUTHOR = #{memberAuthor}</if>
+		</set>
 		WHERE MEMBER_ID = #{memberId}
 	</update>
-	
+
+
 	<select id="isIdCheck" resultType="boolean">
-		SELECT CASE WHEN COUNT(MEMBER_ID) = 1 THEN 0 ELSE 1 END AS ID
+		SELECT CASE WHEN
+		COUNT(MEMBER_ID) = 1 THEN 0 ELSE 1 END AS ID
 		FROM MEMBER
-		WHERE MEMBER_ID = #{Id}
+		WHERE MEMBER_ID
+		= #{Id}
 	</select>
-	
+
 </mapper>

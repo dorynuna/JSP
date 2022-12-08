@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.yedam.prj.common.AES256Util;
 import com.yedam.prj.common.Command;
@@ -13,11 +14,11 @@ import com.yedam.prj.member.service.MemberService;
 import com.yedam.prj.member.service.MemberVO;
 import com.yedam.prj.member.serviceImpl.MemberServiceImpl;
 
-public class MemberJoin implements Command {
+public class MemberLogin implements Command {
 
 	@Override
 	public String exec(HttpServletRequest request, HttpServletResponse response) {
-		// 회원가입 처리
+		// 로그인처리
 		MemberService dao = new MemberServiceImpl();
 		MemberVO vo = new MemberVO();
 		String password = request.getParameter("memberPassword");
@@ -34,29 +35,26 @@ public class MemberJoin implements Command {
 			e.printStackTrace();
 		}
 		
-		System.out.println(password+"================");
+		HttpSession session = request.getSession(); // 서버가 만들어 보관하고 있는 세션객체를 호출
 		
-		int n = 0;
-		//String viewPage = null; // 돌려줄 페이지
-		String message = null; // 메세지
-		// 매퍼의 인서트쪽 변수갯수랑 같은지 확인해라. 총 일곱개
+		String message = null;
 		vo.setMemberId(request.getParameter("memberId"));
-		vo.setMemberName(request.getParameter("memberName"));
 		vo.setMemberPassword(password);
-		vo.setMemberAge(Integer.valueOf(request.getParameter("memberAge"))); // age는 숫자니까 타입변환 근데 널값되면 오류남 회원가입시에 채워줘야한다.
-		vo.setMemberAddress(request.getParameter("memberAddress"));
-		vo.setMemberTel(request.getParameter("memberTel"));
-		vo.setMemberAuthor("USER"); // 회원가입하면 권한 디폴트는 유저로 지정한다.
-
-		n = dao.memberInsert(vo);
-		if (n != 0) {
-			message = "회원가입이 성공적으로 처리되었습니다.";
-		} else {
-			message = "회원가입이 실패했습니다.";
-		}
-		request.setAttribute("message", message);
 		
-		return "member/memberJoin.tiles";
+		vo = dao.memberSelect(vo);
+		if(vo != null) {
+			session.setAttribute("id", vo.getMemberId());
+			session.setAttribute("author", vo.getMemberAuthor());
+			session.setAttribute("name", vo.getMemberName());
+			
+			message = vo.getMemberName() +"님 환영합니다.";
+			request.setAttribute("message", message);
+			request.setAttribute("member", vo);
+		} else {
+			message = "아이디 또는 패스워드가 일치하지 않습니다.";
+			request.setAttribute("message", message);
+		}
+		return "member/memberLogin.tiles";// 보여줄 페이지
 	}
-	
+
 }

@@ -14,9 +14,16 @@ import javax.servlet.http.HttpServletResponse;
 import com.yedam.prj.MainCommand;
 import com.yedam.prj.common.Command;
 import com.yedam.prj.member.command.AjaxMemberIdCheck;
+import com.yedam.prj.member.command.MemberDelete;
+import com.yedam.prj.member.command.MemberEdit;
 import com.yedam.prj.member.command.MemberJoin;
 import com.yedam.prj.member.command.MemberJoinForm;
 import com.yedam.prj.member.command.MemberList;
+import com.yedam.prj.member.command.MemberLogin;
+import com.yedam.prj.member.command.MemberLoginForm;
+import com.yedam.prj.member.command.MemberLogout;
+import com.yedam.prj.member.command.MemberSelect;
+import com.yedam.prj.member.command.MemberUpdate;
 
 
 //@WebServlet("*.do")
@@ -34,7 +41,13 @@ public class FrontController extends HttpServlet {
 		map.put("/memberJoinForm.do", new MemberJoinForm());//회원가입폼
 		map.put("/AjaxMemberIdCheck.do", new AjaxMemberIdCheck());//회원가입폼
 		map.put("/memberJoin.do", new MemberJoin());//회원가입폼
-		
+		map.put("/memberLoginForm.do", new MemberLoginForm()); // 로그인폼호출
+		map.put("/memberLogin.do", new MemberLogin()); // 로그인처리
+		map.put("/memberLogout.do", new MemberLogout()); // 로그아웃처리
+		map.put("/memberSelect.do", new MemberSelect()); // 멤버 한명 단건 조회
+		map.put("/memberEdit.do", new MemberEdit()); // 멤버 수정폼 호출
+		map.put("/memberDelete.do", new MemberDelete()); // 멤버 삭제
+		map.put("/memberUpdate.do", new MemberUpdate()); // 멤버 수정
 	}
 
 
@@ -54,6 +67,7 @@ public class FrontController extends HttpServlet {
 				//ajax
 				response.setContentType("text/html; charset=UTF-8");
 				response.getWriter().print(viewPage.substring(5));//Ajax:5글자니까 그 뒤부터 데이터다
+				return;
 			}else if(!viewPage.endsWith(".tiles")){
 				viewPage = "WEB-INF/views/" + viewPage + ".jsp"; //타일즈적용안하는것
 		
