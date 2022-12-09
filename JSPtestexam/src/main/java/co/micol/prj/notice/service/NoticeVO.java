@@ -1,6 +1,6 @@
-package com.yedam.prj.notice.service;
+package co.micol.prj.notice.service;
 
-import java.sql.Date; // 날짜면 sql 시분초면 util
+import java.sql.Date;
 
 import lombok.Getter;
 import lombok.Setter;

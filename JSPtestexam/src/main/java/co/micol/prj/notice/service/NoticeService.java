@@ -1,4 +1,4 @@
-package com.yedam.prj.notice.service;
+package co.micol.prj.notice.service;
 
 import java.util.List;
 

@@ -1,19 +1,19 @@
-package com.yedam.prj.notice.serviceImpl;
+package co.micol.prj.notice.serviceImpl;
 
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
-import com.yedam.prj.common.DataSource;
-import com.yedam.prj.notice.map.NoticeMapper;
-import com.yedam.prj.notice.service.NoticeAttechVO;
-import com.yedam.prj.notice.service.NoticeService;
-import com.yedam.prj.notice.service.NoticeVO;
+import co.micol.prj.common.DataSource;
+import co.micol.prj.notice.map.NoticeMapper;
+import co.micol.prj.notice.service.NoticeAttechVO;
+import co.micol.prj.notice.service.NoticeService;
+import co.micol.prj.notice.service.NoticeVO;
 
 public class NoticeServiceImpl implements NoticeService {
 	private SqlSession sqlSession = DataSource.getInstance().openSession(true);
 	private NoticeMapper map = sqlSession.getMapper(NoticeMapper.class);
-
+	
 	@Override
 	public List<NoticeVO> noticeSelectList() {
 		return map.noticeSelectList();
@@ -21,7 +21,7 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Override
 	public NoticeVO noticeSelect(NoticeVO vo) {
-		noticeHitUpdate(vo.getNoticeId()); // 조회수를 증가
+		noticeHitUpdate(vo.getNoticeId()); //조회수를 증가
 		return map.noticeSelect(vo);
 	}
 
@@ -56,7 +56,7 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public void noticeHitUpdate(int id) {
+	public void noticeHitUpdate(int id) {	
 		map.noticeHitUpdate(id);
 	}
 
