@@ -6,10 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <title> <tiles:getAsString name="title"/></title>
+<link rel="stylesheet" href="css/menu.css">
 </head>
+
 <body>
 	<tiles:insertAttribute name="menu" />
 	<tiles:insertAttribute name="body" />
 	<tiles:insertAttribute name="footer"/>
 </body>
+
 </html>
